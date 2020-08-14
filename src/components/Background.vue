@@ -1,11 +1,11 @@
 <template>
     <div ref="elBackground" class="background">
-        <span style="--t:15%;--l:26%;--b:80%;--deg:90deg;" data-speed="-5" class="layer"></span>
-        <span style="--t:85%;--l:62%;--b:10%;--deg:180deg;" data-speed="7" class="layer"></span>
-        <span style="--t:10%;--l:90%;--b:10%;--deg:270deg;" data-speed="9" class="layer"></span>
-        <span style="--t:58%;--l:15%;--b:25%;--deg:-90deg;" data-speed="-4" class="layer"></span>
-        <span style="--t:50%;--l:45%;--b:50%;--deg:-270deg;" data-speed="-8" class="layer"></span>
-        <span style="--t:20%;--l:70%;--b:60%;--deg:-180deg;" data-speed="5" class="layer"></span>
+        <span style="--t:15%;--l:26%;--b:80%;--deg:90deg;--x:9px;--y:16px" data-speed="-5" class="layer"></span>
+        <span style="--t:85%;--l:62%;--b:10%;--deg:180deg;--x:13px;--y:4px" data-speed="7" class="layer"></span>
+        <span style="--t:10%;--l:90%;--b:10%;--deg:270deg;--x:-10px;--y:9px" data-speed="9" class="layer"></span>
+        <span style="--t:58%;--l:15%;--b:25%;--deg:-90deg;--x:5px;--y:-8px" data-speed="-4" class="layer"></span>
+        <span style="--t:50%;--l:45%;--b:50%;--deg:-270deg;--x:12px;--y:-12px" data-speed="-8" class="layer"></span>
+        <span style="--t:20%;--l:70%;--b:60%;--deg:-180deg;--x:4px;--y:7px" data-speed="5" class="layer"></span>
     </div>
 </template>
 
@@ -59,7 +59,7 @@ export default {
             top: var(--t);
             left: var(--l);
             bottom: var(--b);
-            animation: colorChange 5s linear infinite, moveAnim 5s linear infinite;
+            animation: colorChange 5s linear infinite, moveAnim 5s linear infinite alternate;
 
             &:before {
                 content: '';
@@ -141,15 +141,11 @@ export default {
 
     @keyframes moveAnim {
         0% {
-            transform: rotate(0deg);
-        }
-
-        50% {
-            transform: rotate(var(--deg));
+            transform: rotate(0deg) translate(0px,0px);
         }
 
         100% {
-            transform: rotate(0deg);
+            transform: rotate(var(--deg)) translate(var(--x),var(--y));
         }
     }
 </style>

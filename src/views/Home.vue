@@ -9,7 +9,7 @@
         </div>
 
         <div ref="elGames" class="games-container">
-            <div class="game-card" @click="openGame('Memory Game')">
+            <div class="game-card">
                 <div class="card-inner">
                     <div class="icon">
                         <MemoryGame class="svg"/>
@@ -31,7 +31,7 @@
                 </div>
             </div>
 
-            <div class="game-card">
+            <div class="game-card" @click="openGame('Rock Paper Scrissors')">
                 <div class="card-inner">
                     <div class="icon">
                         <RockPaperScrissors class="svg"/>
@@ -58,7 +58,7 @@ export default {
         RockPaperScrissors,
     },
     mounted() {
-        // this.animate();
+        this.animate();
     },
     methods: {
         animate() {
@@ -70,12 +70,12 @@ export default {
 
             tl.set([gamesContainer, ...games, title, subtitle], { autoAlpha: 0 });
 
-            tl.fromTo(title, { scale: 0 }, { top: '50%', translateY: '-50%', autoAlpha: 1, scale: 1, ease: 'back', duration: 1 })
+            tl.fromTo(title, { scale: 0 }, { autoAlpha: 1, scale: 1, ease: 'back', duration: 1 })
                 .to(title.children, { duration: 0.25, color: '#32892F', ease: 'none' })
-                .to(title, { top: 0, scale: 0.8, translateY: '0%', ease: 'bounce', duration: 1, delay: 0.25, onComplete: this.onComplete })
+                .to(title, { top: 0, scale: 0.8, translateY: '0%', ease: 'bounce', duration: 1, onComplete: this.onComplete }, '-=0.25')
                 .fromTo(subtitle, { scale: 0 }, { autoAlpha: 1, scale: 1, ease: 'power4.inOut', duration: 1 })
                 .to(gamesContainer, { pointerEvents: 'auto', autoAlpha: 1 }, '-=0.5')
-                .fromTo(games, { y: '-=50' }, { y: '+=50', autoAlpha: 1 });
+                .fromTo(games, { y: '-=50' }, { y: '+=50', autoAlpha: 1 }, '-=0.75');
         },
         onComplete() {
             const shake = this.$gsap.timeline({ repeat: -1 });
@@ -239,7 +239,7 @@ export default {
 
         .subtitle {
             margin-top: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             font-size: 10vw;
         }
     }

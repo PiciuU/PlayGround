@@ -9,10 +9,10 @@
             </div>
         </div>
         <div class="navigation">
-            <div class="navigation-title"><router-link to="/">Play<span>Ground</span></router-link></div>
-            <div class="navigation-option"><router-link to="/">Memory Game</router-link></div>
-            <div class="navigation-option"><router-link to="/">Tic Tac Toe</router-link></div>
-            <div class="navigation-option"><router-link to="/">Rock Paper Scrissors</router-link></div>
+            <div class="navigation-title" @click="toggle"><router-link to="/">Play<span>Ground</span></router-link></div>
+            <div class="navigation-option" @click="toggle"><router-link to="/games/mg">Memory Game</router-link></div>
+            <div class="navigation-option" @click="toggle"><router-link to="/">Tic Tac Toe</router-link></div>
+            <div class="navigation-option" @click="toggle"><router-link to="/games/rps">Rock Paper Scrissors</router-link></div>
         </div>
     </nav>
 </template>
@@ -45,7 +45,6 @@ export default {
         box-sizing: border-box;
         z-index: 100;
         font-family: Pixel;
-        -webkit-tap-highlight-color: transparent;
         transform:translateY(-2000px);
         transition: transform .5s ease-in-out, visibility 1s 0s;
     }
@@ -155,7 +154,6 @@ export default {
         margin: 0;
         right: 0;
         top: 0;
-        -webkit-tap-highlight-color: transparent;
     }
 
     .hamburger-box {

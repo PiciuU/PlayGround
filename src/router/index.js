@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import RockPaperScrissors from '@/views/RockPaperScrissors.vue';
 import Home from '../views/Home.vue';
-import MemoryGame from '../views/MemoryGame.vue';
 
 Vue.use(VueRouter);
 
@@ -12,9 +12,16 @@ const routes = [
         component: Home,
     },
     {
-        path: '/memory',
+        path: '/games/mg',
         name: 'Memory Game',
-        component: MemoryGame,
+        component: RockPaperScrissors,
+        props: true,
+    },
+
+    {
+        path: '/games/rps',
+        name: 'Rock Paper Scrissors',
+        component: RockPaperScrissors,
         props: true,
     },
 ];
