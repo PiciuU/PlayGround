@@ -11,7 +11,7 @@
         <div class="navigation">
             <div class="navigation-title" @click="toggle"><router-link to="/">Play<span>Ground</span></router-link></div>
             <div class="navigation-option" @click="toggle"><router-link to="/games/mg">Memory Game</router-link></div>
-            <div class="navigation-option" @click="toggle"><router-link to="/">Tic Tac Toe</router-link></div>
+            <div class="navigation-option" @click="toggle"><router-link to="/games/ttt">Tic Tac Toe</router-link></div>
             <div class="navigation-option" @click="toggle"><router-link to="/games/rps">Rock Paper Scrissors</router-link></div>
         </div>
     </nav>

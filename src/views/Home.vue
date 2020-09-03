@@ -20,7 +20,7 @@
                 </div>
             </div>
 
-            <div class="game-card">
+            <div class="game-card" @click="openGame('Tic Tac Toe')">
                 <div class="card-inner">
                     <div class="icon">
                         <TicTacToe class="svg"/>
