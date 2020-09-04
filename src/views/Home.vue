@@ -9,7 +9,7 @@
         </div>
 
         <div ref="elGames" class="games-container">
-            <div class="game-card">
+            <div class="game-card" @click="openGame('Memory Game')">
                 <div class="card-inner">
                     <div class="icon">
                         <MemoryGame class="svg"/>

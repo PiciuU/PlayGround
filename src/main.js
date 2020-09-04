@@ -16,6 +16,7 @@ Vue.use(VueKinesis);
 gsap.registerPlugin(TextPlugin);
 
 Vue.prototype.$gsap = gsap;
+Vue.prototype.$vue = Vue;
 
 Vue.component('Background', Background);
 Vue.component('Hamburger', Hamburger);

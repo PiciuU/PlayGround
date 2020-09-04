@@ -16,5 +16,6 @@ module.exports = {
     "indent": ["error", 4],
     "max-len": ["error", 300],
     "object-curly-newline": 'off',
+    "no-param-reassign": 'off',
   },
 };
