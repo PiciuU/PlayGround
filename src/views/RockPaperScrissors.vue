@@ -1,17 +1,17 @@
 <template>
     <main>
-        <div class="game-container">
+        <div ref="game" class="game-container">
             <div class="selections">
-                <div class="selection" v-bind:class="{ win: winner === 'player', lose: winner === 'computer' }">
+                <div class="selection" :class="{ win: winner === 'player', lose: winner === 'computer' }">
                     <transition name="fade" mode="out-in">
-                        <component v-if="playerSelects !== null" v-bind:is="playerSelects" key="0"/>
-                        <div v-else class="player-result" key="1"> {{ playerScore }} </div>
+                        <component v-if="playerSelects !== null" :is="playerSelects" key="0"/>
+                        <div v-else key="1"> {{ playerScore }} </div>
                     </transition>
                 </div>
-                <div class="selection mirror" v-bind:class="{ win: winner === 'computer', lose: winner === 'player' }">
+                <div class="selection mirror" :class="{ win: winner === 'computer', lose: winner === 'player' }">
                     <transition name="fade" mode="out-in">
-                        <component v-if="computerSelects !== null" v-bind:is="computerSelects" key="0"/>
-                        <div v-else class="computer-result" key="1"> {{ computerScore }} </div>
+                        <component v-if="computerSelects !== null" :is="computerSelects" key="0"/>
+                        <div v-else key="1"> {{ computerScore }} </div>
                      </transition>
                 </div>
             </div>
@@ -27,14 +27,8 @@
                         </button>
                     </div>
                     <div class="options" v-else key="1">
-                        <div class="option" @click="gameManager(0)">
-                            <Rock class="svg"/>
-                        </div>
-                        <div class="option" @click="gameManager(1)">
-                            <Paper class="svg"/>
-                        </div>
-                        <div class="option" @click="gameManager(2)">
-                            <Scrissors class="svg"/>
+                        <div class="option" v-for="(selection,index) in selections" :key="selection.name" @click="gameManager(index)">
+                            <component :is="selection.name"/>
                         </div>
                     </div>
                 </transition>
@@ -80,31 +74,28 @@ export default {
         };
     },
     mounted() {
-        this.animate();
+        this.animatePage();
     },
     methods: {
-        animate() {
-            const main = document.getElementsByTagName('main');
-            const tl = this.$gsap.timeline();
-
-            if (this.$attrs.home) tl.fromTo(main, { translateY: '-100%' }, { translateY: '0%', duration: 1 });
-            else tl.fromTo(main, { autoAlpha: 0, scale: 0 }, { autoAlpha: 1, scale: 1, duration: 1 });
+        animatePage() {
+            const gameBoard = this.$refs.game;
+            if (this.$attrs.slide) this.$gsap.fromTo(gameBoard, { translateY: '-100%' }, { translateY: '0%', duration: 1 });
+            else this.$gsap.fromTo(gameBoard, { autoAlpha: 0, scale: 0 }, { autoAlpha: 1, scale: 1, duration: 1 });
         },
         async gameManager(index) {
-            if (!this.gameInProgress) {
-                this.gameInProgress = true;
-                const playerSelection = this.playerSelection(index);
-                const computerSelection = this.computerSelection();
+            if (this.gameInProgress) return;
+            this.gameInProgress = true;
+            const playerSelection = this.playerSelection(index);
+            const computerSelection = this.computerSelection();
 
-                const playerWinner = this.isWinner(playerSelection, computerSelection);
-                const computerWinner = this.isWinner(computerSelection, playerSelection);
+            const playerWinner = this.isWinner(playerSelection, computerSelection);
+            const computerWinner = this.isWinner(computerSelection, playerSelection);
 
-                await this.animateSelections(playerSelection, computerSelection);
+            await this.animateSelections(playerSelection, computerSelection);
 
-                if (playerWinner) setTimeout(() => { this.setScore('player'); }, 500);
-                else if (computerWinner) setTimeout(() => { this.setScore('computer'); }, 500);
-                else setTimeout(() => { this.setScore(); }, 500);
-            }
+            if (playerWinner) setTimeout(() => { this.setScore('player'); }, 500);
+            else if (computerWinner) setTimeout(() => { this.setScore('computer'); }, 500);
+            else setTimeout(() => { this.setScore(); }, 500);
         },
         playerSelection(index) {
             return this.selections[index];

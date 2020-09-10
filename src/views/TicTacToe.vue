@@ -1,7 +1,7 @@
 <template>
     <main>
         <div class="game-container">
-            <div ref="elBoard" class="board">
+            <div ref="board" class="board">
                 <div v-for="(n, col) in 3" :key="col">
                     <div v-for="(n, row) in 3" :key="row">
                         <div class="cell" @click="gameManager(col,row)">
@@ -36,7 +36,7 @@ class Game {
         this.computer = null;
     }
 
-    generatePlayerMark() {
+    assignMark() {
         if (this.player !== null) {
             this.computer = this.player === 'x' ? 'o' : 'x';
             return this.computer;
@@ -126,29 +126,29 @@ export default {
         };
     },
     created() {
-        this.startGame();
+        this.initiateGame();
     },
     mounted() {
-        this.animate();
+        this.animatePage();
     },
     methods: {
-        animate() {
-            const main = document.getElementsByTagName('main');
-            const board = this.$refs.elBoard;
+        animatePage() {
+            const gameContainer = document.getElementsByTagName('main');
+            const boardContainer = this.$refs.board;
             const tl = this.$gsap.timeline();
 
-            if (this.$attrs.home) {
-                tl.fromTo(main, { translateY: '-100%' }, { translateY: '0%', duration: 1 })
-                    .fromTo(board, { autoAlpha: 0, scale: 0 }, { autoAlpha: 1, scale: 1, ease: 'back', duration: 1 });
+            if (this.$attrs.slide) {
+                tl.fromTo(gameContainer, { translateY: '-100%' }, { translateY: '0%', duration: 1 })
+                    .fromTo(boardContainer, { autoAlpha: 0, scale: 0 }, { autoAlpha: 1, scale: 1, ease: 'back', duration: 1 });
             } else {
-                tl.fromTo(main, { autoAlpha: 0, scale: 0 }, { autoAlpha: 1, scale: 1, duration: 1 })
-                    .fromTo(board, { autoAlpha: 0, scale: 0 }, { autoAlpha: 1, scale: 1, ease: 'back', duration: 1 });
+                tl.fromTo(gameContainer, { autoAlpha: 0, scale: 0 }, { autoAlpha: 1, scale: 1, duration: 1 })
+                    .fromTo(boardContainer, { autoAlpha: 0, scale: 0 }, { autoAlpha: 1, scale: 1, ease: 'back', duration: 1 });
             }
         },
-        startGame() {
+        initiateGame() {
             this.game = new Game();
-            this.player = this.game.generatePlayerMark();
-            this.computer = this.game.generatePlayerMark();
+            this.player = this.game.assignMark();
+            this.computer = this.game.assignMark();
         },
         async gameManager(col, row) {
             if (this.gameOver || this.moveInProgress) return;
@@ -208,13 +208,13 @@ export default {
             };
         },
         gameOverAnimation() {
-            this.$gsap.to(this.$refs.elBoard, { opacity: 0.25, duration: 1, delay: 0.35 });
+            this.$gsap.to(this.$refs.board, { opacity: 0.25, duration: 1, delay: 0.35 });
         },
         restartGame() {
-            this.$gsap.to(this.$refs.elBoard, { opacity: 1, duration: 1 });
+            this.$gsap.to(this.$refs.board, { opacity: 1, duration: 1 });
             this.gameOver = false;
             this.gameWinner = null;
-            this.startGame();
+            this.initiateGame();
         },
     },
 };
@@ -312,6 +312,7 @@ export default {
             .red { color: #e73232; }
             .stroke { transform: scale(5); }
         }
+
     }
 
     @media (max-width: 850px) {

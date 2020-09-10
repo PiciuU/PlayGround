@@ -1,9 +1,10 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import RockPaperScrissors from '../views/RockPaperScrissors.vue';
-import TicTacToe from '../views/TicTacToe.vue';
-import MemoryGame from '../views/MemoryGame.vue';
+
 import Home from '../views/Home.vue';
+import MemoryGame from '../views/MemoryGame.vue';
+import TicTacToe from '../views/TicTacToe.vue';
+import RockPaperScrissors from '../views/RockPaperScrissors.vue';
 
 Vue.use(VueRouter);
 

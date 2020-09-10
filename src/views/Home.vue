@@ -9,35 +9,13 @@
         </div>
 
         <div ref="elGames" class="games-container">
-            <div class="game-card" @click="openGame('Memory Game')">
-                <div class="card-inner">
+            <div class="game-card" v-for="game in availableGames" :key="game.name" @click="openGame(game.name)">
+                 <div class="card-inner">
                     <div class="icon">
-                        <MemoryGame class="svg"/>
+                        <component :is="game.componentName"/>
                     </div>
-                    <div class="name">
-                        Memory Game
-                    </div>
-                </div>
-            </div>
-
-            <div class="game-card" @click="openGame('Tic Tac Toe')">
-                <div class="card-inner">
-                    <div class="icon">
-                        <TicTacToe class="svg"/>
-                    </div>
-                    <div class="name">
-                        Tic Tac Toe
-                    </div>
-                </div>
-            </div>
-
-            <div class="game-card" @click="openGame('Rock Paper Scrissors')">
-                <div class="card-inner">
-                    <div class="icon">
-                        <RockPaperScrissors class="svg"/>
-                    </div>
-                    <div class="name small">
-                        Rock Paper Scrissors
+                    <div class="name" :class="{ small: game.name === 'Rock Paper Scrissors' }">
+                        {{ game.name }}
                     </div>
                 </div>
             </div>
@@ -52,42 +30,58 @@ import RockPaperScrissors from '@/assets/icons/rock-paper-scrissors.svg';
 
 export default {
     name: 'Home',
+    data() {
+        return {
+            availableGames: [
+                {
+                    name: 'Memory Game',
+                    componentName: 'MemoryGame',
+                },
+                {
+                    name: 'Tic Tac Toe',
+                    componentName: 'TicTacToe',
+                },
+                {
+                    name: 'Rock Paper Scrissors',
+                    componentName: 'RockPaperScrissors',
+                },
+            ],
+        };
+    },
     components: {
         MemoryGame,
         TicTacToe,
         RockPaperScrissors,
     },
     mounted() {
-        this.animate();
+        this.animatePage();
     },
     methods: {
-        animate() {
+        animatePage() {
             const tl = this.$gsap.timeline();
             const title = this.$refs.elTitle;
             const subtitle = this.$refs.elSubtitle;
             const gamesContainer = this.$refs.elGames;
-            const games = gamesContainer.querySelectorAll('.game-card');
+            const games = gamesContainer.children;
 
-            tl.set([gamesContainer, ...games, title, subtitle], { autoAlpha: 0 });
+            tl.set([gamesContainer, games, title, subtitle], { autoAlpha: 0 });
 
-            tl.fromTo(title, { scale: 0 }, { autoAlpha: 1, scale: 1, ease: 'back', duration: 1 })
+            tl.fromTo(title, { scale: 0 }, { autoAlpha: 1, scale: 1, ease: 'back', duration: 0.75 })
                 .to(title.children, { duration: 0.25, color: '#32892F', ease: 'none' })
-                .to(title, { top: 0, scale: 0.8, translateY: '0%', ease: 'bounce', duration: 1, onComplete: this.onComplete }, '-=0.25')
-                .fromTo(subtitle, { scale: 0 }, { autoAlpha: 1, scale: 1, ease: 'power4.inOut', duration: 1 })
-                .to(gamesContainer, { pointerEvents: 'auto', autoAlpha: 1 }, '-=0.5')
-                .fromTo(games, { y: '-=50' }, { y: '+=50', autoAlpha: 1 }, '-=0.75');
+                .to(title, { scale: 0.8, translateY: '0%', ease: 'bounce', duration: 1, onComplete: this.onComplete }, '-=0.25')
+                .fromTo(subtitle, { scale: 0 }, { autoAlpha: 1, scale: 1, ease: 'power4.inOut', duration: 1 }, '-=0.25')
+                .to(gamesContainer, { pointerEvents: 'auto', autoAlpha: 1 }, '-=0.25')
+                .fromTo(games, { y: '-=50' }, { y: '+=50', duration: 0.35, autoAlpha: 1 }, '-=0.85');
         },
         onComplete() {
             const shake = this.$gsap.timeline({ repeat: -1 });
             shake.to(this.$refs.elTitle, { duration: 1, y: '-=10', repeat: 1, yoyo: true, ease: 'none' })
                 .to(this.$refs.elTitle, { duration: 1, y: '+=10', repeat: 1, yoyo: true, ease: 'none' });
         },
-        async openGame(gameName) {
+        openGame(gameName) {
             const main = document.getElementsByTagName('main');
-            const tl = this.$gsap.timeline();
-
-            await tl.fromTo(main, { position: 'fixed' }, { translateY: '100%', duration: 1 });
-            this.$router.push({ name: gameName, params: { home: true } });
+            this.$gsap.fromTo(main, { position: 'fixed' }, { translateY: '100%', duration: 1 })
+                .then(() => { this.$router.push({ name: gameName, params: { slide: true } }); });
         },
     },
 };
@@ -118,7 +112,7 @@ export default {
         align-items: center;
         margin: 0 auto;
         font-family: Undo;
-        pointer-events: auto; // none
+        pointer-events: auto;
 
         .game-card {
             flex: 1;
@@ -145,14 +139,14 @@ export default {
                 .icon {
                     margin-bottom: 10px;
 
-                    .svg {
+                    svg {
                         width: 75px;
                         height: 75px;
                         fill: white;
                         transition: all .5s ease-in-out;
                     }
 
-                    .svg.big {
+                    svg.big {
                         transform: scale(1.25);
                     }
                 }
@@ -203,7 +197,7 @@ export default {
                 transform: scale(1.1) !important;
             }
 
-            &:hover > .card-inner > .icon > .svg {
+            &:hover > .card-inner > .icon > svg {
                 fill: #32892F;
             }
         }

@@ -1,11 +1,11 @@
 <template>
-    <div ref="elBackground" class="background">
-        <span style="--t:15%;--l:26%;--b:80%;--deg:90deg;--x:9px;--y:16px" data-speed="-5" class="layer"></span>
-        <span style="--t:85%;--l:62%;--b:10%;--deg:180deg;--x:13px;--y:4px" data-speed="7" class="layer"></span>
-        <span style="--t:10%;--l:90%;--b:10%;--deg:270deg;--x:-10px;--y:9px" data-speed="9" class="layer"></span>
-        <span style="--t:58%;--l:15%;--b:25%;--deg:-90deg;--x:5px;--y:-8px" data-speed="-4" class="layer"></span>
-        <span style="--t:50%;--l:45%;--b:50%;--deg:-270deg;--x:12px;--y:-12px" data-speed="-8" class="layer"></span>
-        <span style="--t:20%;--l:70%;--b:60%;--deg:-180deg;--x:4px;--y:7px" data-speed="5" class="layer"></span>
+    <div ref="background" class="background">
+        <span style="--t:15%;--l:26%;--b:80%;--deg:90deg;--x:9px;--y:16px"></span>
+        <span style="--t:85%;--l:62%;--b:10%;--deg:180deg;--x:13px;--y:4px"></span>
+        <span style="--t:10%;--l:90%;--b:10%;--deg:270deg;--x:-10px;--y:9px"></span>
+        <span style="--t:58%;--l:15%;--b:25%;--deg:-90deg;--x:5px;--y:-8px"></span>
+        <span style="--t:50%;--l:45%;--b:50%;--deg:-270deg;--x:12px;--y:-12px"></span>
+        <span style="--t:20%;--l:70%;--b:60%;--deg:-180deg;--x:4px;--y:7px"></span>
     </div>
 </template>
 
@@ -13,36 +13,14 @@
 export default {
     name: 'Background',
     mounted() {
-        this.animate();
+        this.animateBackground();
     },
     methods: {
-        animate() {
-            const background = this.$refs.elBackground;
-            this.$gsap.set([...background.children], { autoAlpha: 0 });
-
-            const tl = this.$gsap.timeline({});
-
-            tl.to(background.children, { duration: 2, autoAlpha: 1, stagger: 0.3 });
+        animateBackground() {
+            const backgroundContainer = this.$refs.background;
+            this.$gsap.fromTo(backgroundContainer.children, { autoAlpha: 0 }, { duration: 2, autoAlpha: 1, stagger: 0.35 });
         },
     },
-    // created() {
-    //     document.addEventListener('mousemove', this.parallax);
-    // },
-    // beforeDestroy() {
-    //     document.removeEventListener('mousemove', this.parallax);
-    // },
-    // methods: {
-    //     parallax(e) {
-    //         document.querySelectorAll('.layer').forEach((layer) => {
-    //             const obj = layer;
-    //             const speed = layer.getAttribute('data-speed');
-    //             const x = (window.innerWidth - e.pageX * speed) / 500;
-    //             const y = (window.innerHeight - e.pageY * speed) / 500;
-
-    //             obj.style.transform = `translateX(${x}px) translateY(${y}px)`;
-    //         });
-    //     },
-    // },
 };
 </script>
 
@@ -68,7 +46,6 @@ export default {
                 position: absolute;
                 top: 50%;
                 left: -8px;
-                background: #f00;
                 border-radius: 50%;
                 opacity: 0.75;
             }

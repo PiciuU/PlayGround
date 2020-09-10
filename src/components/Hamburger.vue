@@ -108,12 +108,13 @@ export default {
         width: 1px;
         height: 1px;
         position: fixed;
-        top: 0;
-        right: 0;
+        top: -50%;
+        right: -50%;
         z-index: 100;
         background: rgb(29, 35, 41);
         transition: all .5s ease-in-out;
         border-bottom-left-radius: 50%;
+        box-shadow: 0 0 50px 10px rgba(0,0,0,.5);
     }
 
     .hamburger-outer {
@@ -209,8 +210,8 @@ export default {
     }
 
     .nav-active .background {
-        width: 150%;
-        height: 150%;
+        width: 200%;
+        height: 200%;
     }
 
     .nav-active .navigation {

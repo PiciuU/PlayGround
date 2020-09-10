@@ -1,14 +1,14 @@
 <template>
     <main>
-        <div class="game-container">
+        <div ref="game" class="game-container">
             <div class="summary">
                 <div class="timer" :class="{ 'finish': gameOver }">Time: {{ minutes }}:{{ seconds }}</div>
                 <div class="turns" :class="{ 'finish': gameOver }">Turns: {{ turns }}</div>
             </div>
-            <div ref="elBoard" class="board" :class="{ 'blur': gameOver }">
+            <div ref="board" class="board" :class="{ 'blur': gameOver }">
                 <div v-for="(card, index) in memoryCards" :key="index" @click="flipCard(card)" :class="{ 'flipped': card.isFlipped, 'matched': card.isMatched }" class="memory-card">
                     <div class="front-card"><Hidden></Hidden></div>
-                    <div class="back-card"><component :is="card.name"></component></div>
+                    <div class="back-card"><component :is="card.name"/></div>
                 </div>
             </div>
             <transition name="scale">
@@ -133,8 +133,10 @@ export default {
         };
     },
     mounted() {
-        this.animate();
-        this.initiateGame();
+        this.animateGame();
+    },
+    beforeDestroy() {
+        clearInterval(this.gameInProgress);
     },
     computed: {
         seconds() {
@@ -151,15 +153,11 @@ export default {
         },
     },
     methods: {
-        animate() {
-            const main = document.getElementsByTagName('main');
-            const board = this.$refs.elBoard;
-            const tl = this.$gsap.timeline();
-
-            tl.fromTo(main, { translateY: '-100%' }, { translateY: '0%', duration: 1 })
-                .fromTo(board, { autoAlpha: 0, scale: 0 }, { autoAlpha: 1, scale: 1, duration: 1 });
+        animateGame() {
+            const gameContainer = this.$refs.game;
+            this.$gsap.fromTo(gameContainer, { translateY: '-100%' }, { translateY: '0%', duration: 1, onComplete: this.initiateGame });
         },
-        tick() {
+        timerTick() {
             if (this.totalTime.seconds !== 59) {
                 this.totalTime.seconds += 1;
                 return;
@@ -176,9 +174,9 @@ export default {
                 this.$vue.set(card, 'isFlipped', false);
                 this.$vue.set(card, 'isMatched', false);
             });
-            this.$gsap.fromTo(this.$refs.elBoard, { scale: 0 }, { scale: 1, duration: 1 });
             this.shuffleCards();
-            setTimeout(() => { this.gameInProgress = setInterval(() => this.tick(), 1000); }, 1000);
+            this.$gsap.fromTo(this.$refs.board, { scale: 0 }, { scale: 1, duration: 0.75 });
+            this.gameInProgress = setInterval(() => this.timerTick(), 1000);
         },
         createDeckArray() {
             const array = [];
@@ -243,12 +241,14 @@ export default {
         },
         restartGame() {
             this.gameOver = false;
-            this.$gsap.to(this.$refs.elBoard, { scale: 0, duration: 0.15 });
-            setTimeout(() => { this.memoryCards = []; }, 250);
             this.totalTime.seconds = 0;
             this.totalTime.minutes = 0;
             this.turns = 0;
-            setTimeout(() => { this.initiateGame(); }, 500);
+            this.$gsap.to(this.$refs.board, { scale: 0, duration: 0.35 })
+                .then(() => {
+                    this.memoryCards = [];
+                    setTimeout(() => { this.initiateGame(); }, 250);
+                });
         },
     },
 };
@@ -295,7 +295,7 @@ export default {
             justify-content: center;
             align-items: center;
             align-content: center;
-            transition: filter .25s .25s linear;
+            transition: filter .35s .15s linear;
 
             .memory-card {
                 background: rgb(29, 35, 41);
@@ -368,28 +368,8 @@ export default {
                     }
                 }
 
-                @keyframes shine{
-                    0% {
-                        top: 100%;
-                        left: -100%;
-                    }
-                    100% {
-                        top: -100%;
-                        left: 50%;
-                    }
-                }
-
                 .back-card > svg {
                     animation: bump 0.5s linear;
-                }
-            }
-
-            @keyframes bump {
-                from, to {
-                    transform:scale(1);
-                }
-                50% {
-                    transform: scale(1.2);
                 }
             }
 
@@ -418,6 +398,26 @@ export default {
                     transform: scale(1.2);
                 }
             }
+        }
+    }
+
+    @keyframes shine{
+        0% {
+            top: 100%;
+            left: -100%;
+        }
+        100% {
+            top: -100%;
+            left: 50%;
+        }
+    }
+
+    @keyframes bump {
+        0%, 100% {
+            transform:scale(1);
+        }
+        50% {
+            transform: scale(1.2);
         }
     }
 
