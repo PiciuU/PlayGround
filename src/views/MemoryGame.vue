@@ -23,19 +23,19 @@
 </template>
 
 <script>
-import Hidden from '@/assets/icons/mg-hidden.svg';
-import Hat from '@/assets/icons/mg-hat.svg';
-import Coins from '@/assets/icons/mg-coins.svg';
-import Elixir from '@/assets/icons/mg-elixir.svg';
-import Hourglass from '@/assets/icons/mg-hourglass.svg';
-import Trophy from '@/assets/icons/mg-trophy.svg';
-import Carrot from '@/assets/icons/mg-carrot.svg';
-import Bag from '@/assets/icons/mg-bag.svg';
-import Diamond from '@/assets/icons/mg-diamond.svg';
-import Heart from '@/assets/icons/mg-heart.svg';
-import Crown from '@/assets/icons/mg-crown.svg';
-import Acorn from '@/assets/icons/mg-acorn.svg';
-import Goblin from '@/assets/icons/mg-goblin.svg';
+import Hidden from '@/assets/icons/mg/hidden.svg';
+import Hat from '@/assets/icons/mg/hat.svg';
+import Coins from '@/assets/icons/mg/coins.svg';
+import Elixir from '@/assets/icons/mg/elixir.svg';
+import Hourglass from '@/assets/icons/mg/hourglass.svg';
+import Trophy from '@/assets/icons/mg/trophy.svg';
+import Carrot from '@/assets/icons/mg/carrot.svg';
+import Bag from '@/assets/icons/mg/bag.svg';
+import Diamond from '@/assets/icons/mg/diamond.svg';
+import Heart from '@/assets/icons/mg/heart.svg';
+import Crown from '@/assets/icons/mg/crown.svg';
+import Acorn from '@/assets/icons/mg/acorn.svg';
+import Goblin from '@/assets/icons/mg/goblin.svg';
 
 class Deck {
     constructor(deckArray) {

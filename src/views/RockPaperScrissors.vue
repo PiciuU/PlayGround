@@ -38,9 +38,9 @@
 </template>
 
 <script>
-import Rock from '@/assets/icons/rps-rock.svg';
-import Paper from '@/assets/icons/rps-paper.svg';
-import Scrissors from '@/assets/icons/rps-scrissors.svg';
+import Rock from '@/assets/icons/rps/rock.svg';
+import Paper from '@/assets/icons/rps/paper.svg';
+import Scrissors from '@/assets/icons/rps/scrissors.svg';
 
 export default {
     name: 'RockPaperScrissors',
